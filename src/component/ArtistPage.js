@@ -6,7 +6,7 @@ import { PlayerContext } from '../context/playercontext';
 const ArtistPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { playSong } = useContext(PlayerContext);
+  const { playSong, likeSong, likedSongs } = useContext(PlayerContext);
 
   const artistDetails = {
     1: {
@@ -41,7 +41,7 @@ const ArtistPage = () => {
   };
 
   return (
-    <div className="relative w-full p-6 pt-28 md:pt-32">
+    <div className="relative w-full p-6 pt-28 md:pt-32 lg:pr-72">
       <button onClick={() => navigate(-1)} className="text-white mb-4 bg-[#0E0E0E] p-2 rounded-lg hover:bg-[#151515]">
         &larr; Back
       </button>
@@ -58,7 +58,6 @@ const ArtistPage = () => {
         </div>
       </div>
 
-      {/* Songs Section */}
       <div className="mt-10">
         <h2 className="text-xl font-semibold text-white mb-4">Songs</h2>
         <div className="space-y-4">
@@ -72,9 +71,21 @@ const ArtistPage = () => {
               <div>
                 <h3 className="text-white">{song.title}</h3>
               </div>
-              <button onClick={() => playSong(song)} className="text-white bg-blue-500 px-3 py-1 rounded-md">
-                Play
-              </button>
+              <div className="flex space-x-2">
+                <button onClick={() => playSong(song)} className="text-white bg-blue-500 px-3 py-1 rounded-md">
+                  Play
+                </button>
+                <button
+                  onClick={() => likeSong(song)}
+                  className={`text-white px-3 py-1 rounded-md ${
+                    likedSongs.find((liked) => liked.title === song.title)
+                      ? 'bg-red-500'
+                      : 'bg-gray-600'
+                  }`}
+                >
+                  {likedSongs.find((liked) => liked.title === song.title) ? 'Liked' : 'Like'}
+                </button>
+              </div>
             </div>
           ))}
         </div>

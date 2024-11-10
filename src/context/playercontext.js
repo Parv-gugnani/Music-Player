@@ -1,33 +1,35 @@
-import React, { createContext, useState, useRef } from 'react';
+import React, { createContext, useState } from 'react';
 
 export const PlayerContext = createContext();
 
 export const PlayerProvider = ({ children }) => {
   const [currentSong, setCurrentSong] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
-  const audioRef = useRef(null);
+  const [likedSongs, setLikedSongs] = useState([]);
 
-  const togglePlayPause = (song) => {
-    if (song && song !== currentSong) {
-      setCurrentSong(song);
-      audioRef.current.src = song.url;
-      audioRef.current.play();
-      setIsPlaying(true);
-    } else if (isPlaying) {
-      audioRef.current.pause();
-      setIsPlaying(false);
-    } else {
-      audioRef.current.play();
-      setIsPlaying(true);
-    }
+  const playSong = (song) => {
+    setCurrentSong(song);
+    setIsPlaying(true);
   };
 
-  const playNextSong = () => {
-    // Implement logic for playing the next song if needed
+  const togglePlayPause = () => {
+    setIsPlaying(!isPlaying);
   };
 
-  const playPreviousSong = () => {
-    // Implement logic for playing the previous song if needed
+  const likeSong = (song) => {
+    setLikedSongs((prevLikedSongs) => {
+      // Avoid duplicates in liked songs
+      if (!prevLikedSongs.find((liked) => liked.title === song.title)) {
+        return [...prevLikedSongs, song];
+      }
+      return prevLikedSongs;
+    });
+  };
+
+  const removeLikedSong = (song) => {
+    setLikedSongs((prevLikedSongs) =>
+      prevLikedSongs.filter((liked) => liked.title !== song.title)
+    );
   };
 
   return (
@@ -35,14 +37,14 @@ export const PlayerProvider = ({ children }) => {
       value={{
         currentSong,
         isPlaying,
+        playSong,
         togglePlayPause,
-        playNextSong,
-        playPreviousSong,
-        setCurrentSong,
+        likedSongs,
+        likeSong,
+        removeLikedSong,
       }}
     >
       {children}
-      <audio ref={audioRef} onEnded={playNextSong} />
     </PlayerContext.Provider>
   );
 };

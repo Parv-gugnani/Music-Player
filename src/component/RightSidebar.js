@@ -32,7 +32,7 @@ const RightSidebar = () => {
 
       {/* Sidebar content */}
       <div
-        className={`fixed right-0 top-0 h-full bg-[#0E0E0E] p-4 flex flex-col justify-between transition-transform duration-300 ${
+        className={`fixed right-0 top-16 h-[calc(100vh-4rem)] bg-[#0E0E0E] p-4 flex flex-col justify-between transition-transform duration-300 ${
           isSidebarVisible ? 'translate-x-0' : 'translate-x-full'
         } md:translate-x-0 md:w-64 w-full`}
         onDrop={handleDrop}
@@ -40,11 +40,9 @@ const RightSidebar = () => {
         style={{
           minWidth: '200px',
           maxWidth: '300px',
-          paddingTop: '4rem', // Adjust top padding to create space for the navbar
           overflowY: 'auto',
         }}
       >
-
         <div className="flex-grow">
           <h2 className="text-center text-white font-bold mb-4">Now Playing</h2>
           <div className="flex justify-center items-center mb-4">

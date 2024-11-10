@@ -1,23 +1,20 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
-
+import { PlayerContext } from '../context/playercontext';
 
 const artists = [
   { id: 1, name: 'Michael Jackson', img: 'mch.png' },
   { id: 2, name: 'Kishore Kumar', img: 'kishore.png' },
-  { id: 3, name: 'Drake', img: 'mch.png' },
-  { id: 4, name: 'Taylor Swift', img: 'mch.png' },
-  { id: 5, name: 'Ed Sheeran', img: 'mch.png' },
-  { id: 6, name: 'Beyoncé', img: 'mch.png' },
-  { id: 7, name: 'The Weeknd', img: 'mch.png' },
-  { id: 8, name: 'Bruno Mars', img: 'mch.png' },
+  // other artists...
 ];
 
 const Music = () => {
+  const { likedSongs, playSong } = useContext(PlayerContext);
+
   return (
     <div className="p-6 pt-24">
       <h1 className="text-2xl font-bold mb-4">Artists</h1>
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6 mb-8">
         {artists.map((artist) => (
           <Link
             to={`/artist/${artist.id}`}
@@ -31,6 +28,24 @@ const Music = () => {
             />
             <h2 className="text-lg font-semibold">{artist.name}</h2>
           </Link>
+        ))}
+      </div>
+
+      {/* Liked Songs Section */}
+      <h2 className="text-xl font-semibold text-white mb-4">Liked Songs</h2>
+      <div className="space-y-4">
+        {likedSongs.map((song, index) => (
+          <div
+            key={index}
+            className="bg-gray-800 p-4 rounded-lg flex items-center justify-between"
+          >
+            <div>
+              <h3 className="text-white">{song.title}</h3>
+            </div>
+            <button onClick={() => playSong(song)} className="text-white bg-blue-500 px-3 py-1 rounded-md">
+              Play
+            </button>
+          </div>
         ))}
       </div>
     </div>
