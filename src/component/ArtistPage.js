@@ -16,7 +16,6 @@ const ArtistPage = () => {
       img: '/mch.png',
       songs: [
         { title: 'Billie Jean', url: '/audios/billie-jean.mp3' },
-        { title: 'Thriller', url: '/audios/thriller.mp3' },
       ],
     },
     2: {
@@ -25,7 +24,38 @@ const ArtistPage = () => {
       img: '/kishore.png',
       songs: [
         { title: 'Zindagi Ka Safar', url: '/audios/zindagi.mp3' },
-        { title: 'Zindagi Ka Safar 2', url: '/audios/zindagi.mp3' },
+      ],
+    },
+    3: {
+      name: ' Mojo',
+      listeners: '10,000,000',
+      img: '/secret.png',
+      songs: [
+        { title: 'Secret Id', url: '/audios/secret.mp3' },
+      ],
+    },
+    4: {
+      name: 'Mama India',
+      listeners: '25,000,000',
+      img: '/mama.jpeg',
+      songs: [
+        { title: 'Technical Hitch', url: '/audios/hitch.mp3' },
+      ],
+    },
+    5: {
+      name: 'Cigarette After Sex',
+      listeners: '25,000,000',
+      img: '/neon.png',
+      songs: [
+        { title: 'neon Moon', url: '/audios/neon.mp3' },
+      ],
+    },
+    6: {
+      name: 'Bonjr',
+      listeners: '25,000,000',
+      img: '/okay.jpg',
+      songs: [
+        { title: 'Its okay you are okay', url: '/audios/okay.mp3' },
       ],
     },
   };

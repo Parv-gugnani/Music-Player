@@ -7,6 +7,10 @@ import { Heart } from 'lucide-react';
 const artists = [
   { id: 1, name: 'Michael Jackson', img: 'mch.png' },
   { id: 2, name: 'Kishore Kumar', img: 'kishore.png' },
+  { id: 3, name: 'Mojo', img: 'secret.png' },
+  { id: 4, name: 'Mama India', img: 'mama.jpeg' },
+  { id: 5, name: 'Neon Moon', img: 'neon.png' },
+  { id: 6, name: 'Its okay you are okay', img: 'okay.jpg' },
   // other artists...
 ];
 
