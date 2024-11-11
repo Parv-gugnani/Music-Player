@@ -22,6 +22,8 @@ function App() {
             {/* Sidebar on the left */}
             <Sidebar />
 
+
+
             {/* Main Content Area with Right Sidebar */}
             <div className="flex flex-1 relative">
               {/* Main Content */}
@@ -41,6 +43,7 @@ function App() {
 
               {/* Right Sidebar, only visible on md (medium screens) and larger */}
               <RightSidebar className="hidden md:flex md:w-64 h-full fixed right-0 top-16" />
+
             </div>
           </div>
         </div>

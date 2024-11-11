@@ -4,7 +4,7 @@ import { PlayerContext } from '../context/playercontext';
 import { Play, Pause, SkipBack, SkipForward, X } from 'lucide-react';
 
 const RightSidebar = () => {
-  const { currentSong, isPlaying, togglePlayPause, nextSong, prevSong } = useContext(PlayerContext);
+  const { currentSong, isPlaying, playSong, togglePlayPause, nextSong, prevSong, progress, duration, setProgress } = useContext(PlayerContext);
   const [isSidebarVisible, setIsSidebarVisible] = useState(false);
 
   const handleDrop = (event) => {
@@ -12,12 +12,20 @@ const RightSidebar = () => {
     const songData = event.dataTransfer.getData('song');
     if (songData) {
       const song = JSON.parse(songData);
-      togglePlayPause(song);
+      playSong(song); // Play the dropped song
     }
   };
 
   const handleDragOver = (event) => {
     event.preventDefault();
+  };
+
+  // Calculate progress percentage for progress bar
+  const progressPercent = (progress / duration) * 100 || 0;
+
+  const handleSliderChange = (e) => {
+    const newProgress = (e.target.value / 100) * duration;
+    setProgress(newProgress); // Update song progress based on slider
   };
 
   return (
@@ -30,7 +38,6 @@ const RightSidebar = () => {
         {isSidebarVisible ? <X size={20} /> : <Play size={20} />}
       </button>
 
-      {/* Sidebar content */}
       <div
         className={`fixed right-0 top-16 h-[calc(100vh-4rem)] bg-[#0E0E0E] p-4 flex flex-col justify-between transition-transform duration-300 ${
           isSidebarVisible ? 'translate-x-0' : 'translate-x-full'
@@ -43,39 +50,59 @@ const RightSidebar = () => {
           overflowY: 'auto',
         }}
       >
-        <div className="flex-grow">
-          <h2 className="text-center text-white font-bold mb-4">Now Playing</h2>
-          <div className="flex justify-center items-center mb-4">
+        {/* Mini Music Player Card */}
+        <div className="bg-[#2C2C2C] rounded-lg shadow-lg p-4 mt-auto">
+          <h3 className="text-center text-white font-semibold mb-2">Now Playing</h3>
+          <div className="flex items-center mb-4">
             <img
               src={currentSong ? currentSong.img : '/placeholder.jpg'}
               alt={currentSong ? currentSong.title : 'No Song Playing'}
-              className="w-full h-32 object-cover rounded-md"
+              className="w-16 h-16 rounded-md object-cover mr-3"
             />
+            <div>
+              <h4 className="text-white font-bold text-sm">{currentSong ? currentSong.title : 'No Song Playing'}</h4>
+              <p className="text-gray-400 text-xs">{currentSong ? currentSong.artist : ''}</p>
+            </div>
           </div>
 
-          <div className="text-center text-white mb-4">
-            <h3 className="text-lg font-semibold">{currentSong ? currentSong.title : 'No Song Playing'}</h3>
-            <p className="text-sm">{currentSong ? currentSong.artist : ''}</p>
+          {/* Progress Bar with Seek Slider */}
+          <input
+            type="range"
+            value={progressPercent}
+            max="100"
+            className="w-full h-1 bg-gray-700 rounded appearance-none"
+            style={{ backgroundSize: `${progressPercent}% 100%` }}
+            onChange={handleSliderChange}
+          />
+          <div className="flex justify-between text-xs text-gray-400 mt-2">
+            <span>{formatTime(progress)}</span>
+            <span>{formatTime(duration)}</span>
           </div>
-        </div>
 
-        {/* Player Controls */}
-        <div className="flex flex-col items-center bg-[#1A1A1A] p-4 rounded-lg">
-          <div className="flex justify-around items-center w-full mb-2">
+          {/* Player Controls */}
+          <div className="flex justify-around items-center mt-3">
             <button onClick={prevSong}>
-              <SkipBack className="text-white" size={24} />
+              <SkipBack className="text-white" size={20} />
             </button>
-            <button onClick={() => togglePlayPause(currentSong)} className="p-2 bg-blue-500 rounded-full">
-              {isPlaying ? <Pause className="text-white" size={24} /> : <Play className="text-white" size={24} />}
+            <button onClick={togglePlayPause} className="p-2 rounded-full bg-blue-500">
+              {isPlaying ? <Pause className="text-white" size={20} /> : <Play className="text-white" size={20} />}
             </button>
             <button onClick={nextSong}>
-              <SkipForward className="text-white" size={24} />
+              <SkipForward className="text-white" size={20} />
             </button>
           </div>
         </div>
       </div>
     </>
   );
+};
+
+// Helper function to format time
+const formatTime = (timeInSeconds) => {
+  if (!timeInSeconds) return "0:00";
+  const minutes = Math.floor(timeInSeconds / 60);
+  const seconds = Math.floor(timeInSeconds % 60).toString().padStart(2, "0");
+  return `${minutes}:${seconds}`;
 };
 
 export default RightSidebar;

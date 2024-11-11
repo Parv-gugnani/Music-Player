@@ -2,11 +2,12 @@
 import React, { useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { PlayerContext } from '../context/playercontext';
+import { Heart } from 'lucide-react';
 
 const ArtistPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { playSong, likeSong, likedSongs } = useContext(PlayerContext);
+  const { playSong, toggleLikeSong, likedSongs } = useContext(PlayerContext);
 
   const artistDetails = {
     1: {
@@ -24,17 +25,12 @@ const ArtistPage = () => {
       img: '/kishore.png',
       songs: [
         { title: 'Zindagi Ka Safar', url: '/audios/zindagi.mp3' },
-        { title: 'Zindagi Ka Safar 2 ', url: '/audios/zindagi.mp3' },
-        { title: 'Zindagi Ka Safar 3', url: '/audios/zindagi.mp3' },
+        { title: 'Zindagi Ka Safar 2', url: '/audios/zindagi.mp3' },
       ],
     },
   };
 
   const artist = artistDetails[id];
-
-  if (!artist) {
-    return <div>Artist not found</div>;
-  }
 
   const handleDragStart = (event, song) => {
     event.dataTransfer.setData('song', JSON.stringify(song));
@@ -45,7 +41,7 @@ const ArtistPage = () => {
       <button onClick={() => navigate(-1)} className="text-white mb-4 bg-[#0E0E0E] p-2 rounded-lg hover:bg-[#151515]">
         &larr; Back
       </button>
-      
+
       <div className="relative bg-cover bg-center rounded-2xl h-96 w-full mx-auto bg-gradient-to-t from-red-500 to-transparent overflow-hidden">
         <img src={artist.img} alt={`${artist.name} Background`} className="absolute inset-0 w-full h-full object-cover rounded-2xl opacity-60" />
       </div>
@@ -66,7 +62,7 @@ const ArtistPage = () => {
               key={index}
               className="bg-gray-800 p-4 rounded-lg flex items-center justify-between"
               draggable
-              onDragStart={(event) => handleDragStart(event, song)}
+              onDragStart={(event) => handleDragStart(event, song)} // Enable drag functionality
             >
               <div>
                 <h3 className="text-white">{song.title}</h3>
@@ -75,15 +71,10 @@ const ArtistPage = () => {
                 <button onClick={() => playSong(song)} className="text-white bg-blue-500 px-3 py-1 rounded-md">
                   Play
                 </button>
-                <button
-                  onClick={() => likeSong(song)}
-                  className={`text-white px-3 py-1 rounded-md ${
-                    likedSongs.find((liked) => liked.title === song.title)
-                      ? 'bg-red-500'
-                      : 'bg-gray-600'
-                  }`}
-                >
-                  {likedSongs.find((liked) => liked.title === song.title) ? 'Liked' : 'Like'}
+                <button onClick={() => toggleLikeSong(song)}>
+                  <Heart className={`${
+                    likedSongs.some((liked) => liked.title === song.title) ? 'text-red-500' : 'text-gray-400'
+                  }`} />
                 </button>
               </div>
             </div>
